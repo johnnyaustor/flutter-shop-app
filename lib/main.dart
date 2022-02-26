@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_app/providers/orders_provider.dart';
+import 'package:flutter_shop_app/screens/cart_screen.dart';
+import 'package:flutter_shop_app/screens/orders_screen.dart';
+import 'package:provider/provider.dart';
+
+import 'providers/cart_provider.dart';
+import 'providers/products_provider.dart';
+import 'screens/product_detail_screen.dart';
+import 'screens/products_overview_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,44 +16,28 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shop App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Shop App'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  final String title;
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text(
-              'Shop App',
-            ),
-          ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProductsProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => OrdersProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Shop App',
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+              .copyWith(secondary: Colors.deepOrangeAccent),
+          fontFamily: 'Lato',
         ),
+        home: const ProductsOverviewScreen(),
+        routes: {
+          ProductDetailScreen.routeName: (_) => const ProductDetailScreen(),
+          CartScreen.routeName: (_) => const CartScreen(),
+          OrdersScreen.routerName: (_) => const OrdersScreen(),
+        },
       ),
     );
   }
