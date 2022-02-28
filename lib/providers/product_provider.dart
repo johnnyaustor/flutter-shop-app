@@ -9,7 +9,7 @@ class ProductProvider with ChangeNotifier {
   late bool isFavorite;
 
   ProductProvider({
-    required this.id,
+    this.id = '',
     required this.title,
     required this.desc,
     required this.price,
